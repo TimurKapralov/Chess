@@ -35,9 +35,8 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
-@app.route('/sucsess', methods=['GET', 'POST'])
-def sucsess():
-    pass
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     formm = RegisterForm()
