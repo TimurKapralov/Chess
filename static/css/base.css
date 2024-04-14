@@ -1,3 +1,19 @@
-body  {
+body {
     background-image: url("/static/images/img.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+#main_name {
+    font-family: "Arial";
+    font-size: 20pt;
+}
+
+.regaulabels {
+    color: white;
+}
+
+.regau {
+    width: 50%;
+    margin: 0 auto;
 }
