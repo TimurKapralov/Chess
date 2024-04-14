@@ -1,6 +1,6 @@
 body {
     background-image: url("/static/images/img.jpg");
-    background-size: 100%;
+    background-size: 200%;
     background-repeat: no-repeat;
 }
 
@@ -10,10 +10,17 @@ body {
 }
 
 .regaulabels {
-    color: white;
+    color: black;
+    font-size: 30pt;
+    text-align: center;
 }
 
 .regau {
     width: 50%;
     margin: 0 auto;
+}
+
+.strregau {
+    text-align: center;
+    font-size: 16pt;
 }

@@ -13,7 +13,7 @@
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <a id="main_name">CHESS</a>
+        <a id="main_name" class="navbar-brand" href="/">CHESS</a>
         {% if current_user.is_authenticated %}
     <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
 {% else %}
@@ -27,6 +27,7 @@
 <!-- Begin page content -->
 <main role="main" class="container">
     {% block content %}{% endblock %}
+
 </main>
 </body>
 </html>

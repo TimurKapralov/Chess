@@ -1,9 +1,10 @@
 from flask import redirect, render_template, Flask
-from data.login import LoginForm
-from forms.user import RegisterForm
-from data.users import User
-from data import db_session
 from flask_login import LoginManager, login_user, login_required, logout_user
+
+from data import db_session
+from data.login import LoginForm
+from data.users import User
+from forms.user import RegisterForm
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -24,6 +25,7 @@ def START():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    logout_user()
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -39,6 +41,7 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
+    logout_user()
     formm = RegisterForm()
     if formm.validate_on_submit():
         if formm.password.data != formm.password_again.data:
@@ -46,15 +49,14 @@ def reqister():
                                    form=formm,
                                    message="Пароли не совпадают")
         db_sess = db_session.create_session()
-        if db_sess.query(User).filter(User.email == formm.email.data).first():
+        if (db_sess.query(User).filter(User.email == formm.email.data).first() or
+                db_sess.query(User).filter(User.name == formm.name.data).first()):
             return render_template('register.html', title='Регистрация',
                                    form=formm,
                                    message="Такой пользователь уже есть")
         user = User(
             name=formm.name.data,
             email=formm.email.data,
-            surname=formm.surname.data,
-            clas=formm.clas.data
         )
         user.set_password(formm.password.data)
         db_sess.add(user)
