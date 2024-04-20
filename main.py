@@ -1,10 +1,12 @@
-from flask import redirect, render_template, Flask
+from flask import redirect, render_template, Flask, request
 from flask_login import LoginManager, login_user, login_required, logout_user
 
 from data import db_session
 from data.login import LoginForm
 from data.users import User
 from forms.user import RegisterForm
+
+from chess import Board
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -21,7 +23,6 @@ def load_user(user_id):
 @app.route('/')
 def START():
     return render_template('base.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -71,6 +72,24 @@ def logout():
     logout_user()
     return redirect("/")
 
+
+board = None
+
+@app.route('/game')
+def game():
+    global board
+    board = Board()
+    return render_template('chess.html')
+
+@app.route('/chess_move', methods=['POST', 'GET'])
+def chess_move():
+    global board
+    a = request.form['cell_from']
+    b = request.form['cell_to']
+    board.move([a, b])
+    board.print()
+    board.get_html()
+    return render_template('chess_new.html')
 
 if __name__ == '__main__':
     db_session.global_init("db/blogs.db")
