@@ -24,6 +24,7 @@ def load_user(user_id):
 def START():
     return render_template('base.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     logout_user()
@@ -75,11 +76,14 @@ def logout():
 
 board = None
 
+
 @app.route('/game')
 def game():
     global board
     board = Board()
+    board.get_html()
     return render_template('chess.html')
+
 
 @app.route('/chess_move', methods=['POST', 'GET'])
 def chess_move():
@@ -87,9 +91,9 @@ def chess_move():
     a = request.form['cell_from']
     b = request.form['cell_to']
     board.move([a, b])
-    board.print()
     board.get_html()
-    return render_template('chess_new.html')
+    return render_template('chess.html')
+
 
 if __name__ == '__main__':
     db_session.global_init("db/blogs.db")

@@ -1,7 +1,3 @@
-# TO DO
-#    Пешка ест на проходе
-#    Пешка меняет фигуру
-#    Рокировка
 WHITE = 0
 BLACK = 1
 
@@ -24,44 +20,44 @@ OFF = 1
 
 IMPOSSIBLE_COUNT = 33
 
-START_HTML_BOARD = ' \
-<!DOCTYPE html> \
-    <html> \
-    <head> \
-        <title></title> \
-        <meta charset="UTF-8"> \
-        <style> \
-            .chess-board { border-spacing: 0; border-collapse: collapse; } \
-            .chess-board th { padding: .5em; } \
-            .chess-board th + th { border-bottom: 1px solid black; } \
-            .chess-board th:first-child, \
-            .chess-board td:last-child { border-right: 1px solid black; } \
-            .chess-board tr:last-child td { border-bottom: 1px solid; } \
-            .chess-board th:empty { border: none; } \
-            .chess-board td { width: 1.5em; height: 1.5em; text-align: center; font-size: 32px; line-height: 0;} \
-            .chess-board .light { background: #ECD89B; } \
-            .chess-board .dark { background: #904B0A; } \
-            .chess-board .white { color: white; } \
-            .chess-board .black { color: black; } \
-        </style> \
-    </head> \
-    <body> \
-        <table class="chess-board"> \
-            <tbody> \
+START_HTML_BOARD = '\
+<!DOCTYPE html> \n\
+    <html  lang="ru"> \n\
+    <head> \n\
+        <title></title> \n\
+        <meta charset="UTF-8"> \n\
+        <style> \n\
+            .chess-board { border-spacing: 0; border-collapse: collapse; } \n\
+            .chess-board th { padding: .5em; } \n\
+            .chess-board th + th { border-bottom: 1px solid black; } \n\
+            .chess-board th:first-child, \n\
+            .chess-board td:last-child { border-right: 1px solid black; } \n\
+            .chess-board tr:last-child td { border-bottom: 1px solid; } \n\
+            .chess-board th:empty { border: none; } \n\
+            .chess-board td { width: 1.5em; height: 1.5em; text-align: center; font-size: 32px; line-height: 0;} \n\
+            .chess-board .light { background: #ECD89B; } \n\
+            .chess-board .dark { background: #904B0A; } \n\
+            .chess-board .white { color: white; } \n\
+            .chess-board .black { color: black; } \n\
+        </style> \n\
+    </head> \n\
+    <body> \n\
+        <table class="chess-board"> \n\
+            <tbody> \n\
 '
 
-
-END_HTML_BOARD = ' \
-            </tbody> \
-        </table> \
-        <form method="POST" action="/chess_move"> \
-            <input class="cell" name="cell_from" placeholder="Введите ячейку старта" /> \
-            <input class="cell" name="cell_to" placeholder="Введите ячейку финиша" /> \
-            <input type="submit" value="Сходить" /> \
-        </form> \
-    </body> \
-</html> \
+END_HTML_BOARD = '\
+            </tbody> \n\
+        </table> \n\
+        <form method="POST" action="/chess_move"> \n\
+            <input class="cell" name="cell_from" placeholder="Введите ячейку старта" /> \n\
+            <input class="cell" name="cell_to" placeholder="Введите ячейку финиша" /> \n\
+            <input type="submit" value="Сходить" /> \n\
+        </form> \n\
+    </body> \n\
+</html> \n\
 '
+
 
 class Cell:
     def __init__(self, x, y):
@@ -102,6 +98,9 @@ class Board:
         self.width = 8
         self.height = 8
         self.Cells = [[None] * self.height for i in range(self.width)]
+
+        self.last_cell_from = None
+        self.last_cell_to = None
 
         for x in range(self.width):
             for y in range(self.height):
@@ -145,29 +144,159 @@ class Board:
 
     def get_html(self):
         a = START_HTML_BOARD
-        a += "<tr>"
-        a += "<th></th>"
+        a += "<tr>\n"
+        a += "<th></th>\n"
         for i in range(8):
-            a += f"<th>{chr(i + ord('A'))}</th>"
-        a += "</tr>"
+            a += f"<th>{chr(i + ord('A'))}</th>\n"
+        a += "</tr>\n"
         for row in range(self.height - 1, -1, -1):
-            a += "<tr>"
-            a += f"<th>{row + 1}</th>"
+            a += "<tr>\n"
+            a += f"<th>{row + 1}</th>\n"
             for col in range(self.width):
                 v = 'light' if (row + col) % 2 == 1 else 'dark'
                 if self.Cells[col][row].figure == None:
-                    a += f"<th class = \"{v}\"></th>"
+                    a += f"<td class = \"{v}\"></td>\n"
                     continue
 
                 color = 'white' if self.Cells[col][row].figure.color == WHITE else 'black'
                 img = self.Cells[col][row].figure.img
-                a += f"<th class = \"{v} {color}\">{img}</th>"
-            a += "</tr>"
+                a += f"<td class = \"{v} {color}\">{img}</td>\n"
+            a += "</tr>\n"
         a += END_HTML_BOARD
         print(a)
-        d = open("templates/chess_new.html", "w",  encoding="utf-8")
+        d = open("templates/chess.html", "w", encoding="utf-8")
         d.write(a)
         d.close()
+
+    def check_castling(self, cell_from: Cell, cell_to: Cell):
+        if cell_from.figure.fig != KING or cell_from.figure.init_state != True:
+            return False
+
+        if cell_from.row != cell_to.row or abs(cell_from.col - cell_to.col) != 2:
+            return False
+
+        rook_col = 0 if cell_from.col > cell_to.col else 7
+        row = cell_from.row
+
+        rook_cell = self.Cells[rook_col][row]
+        if rook_cell.figure == None or rook_cell.figure.fig != ROOK or rook_cell.figure.init_state != True:
+            return False
+
+        if self.count_figures_between_cells(cell_from, rook_cell) != 2:
+            return False
+
+        dist_col = abs(cell_from.col - rook_cell.col) + 1
+
+        if dist_col == 5:
+            king = cell_from.figure
+            cell_from.figure = None
+
+            for col in range(2, 5):
+                self.Cells[col][row].figure = king
+                ret = self.is_check(self.current_color)
+                self.Cells[col][row].figure = None
+                if ret == True:
+                    cell_from.figure = king
+                    return False
+
+            self.Cells[2][row].figure = king
+            self.Cells[3][row].figure = rook_cell.figure
+            self.Cells[2][row].figure.init_state = False
+            self.Cells[3][row].figure.init_state = False
+            rook_cell.figure = None
+            return True
+
+        if dist_col == 4:
+            king = cell_from.figure
+            cell_from.figure = None
+
+            for col in range(4, 7):
+                self.Cells[col][row].figure = king
+                ret = self.is_check(self.current_color)
+                self.Cells[col][row].figure = None
+                if ret == True:
+                    cell_from.figure = king
+                    return False
+
+            self.Cells[6][row].figure = king
+            self.Cells[5][row].figure = rook_cell.figure
+            self.Cells[6][row].figure.init_state = False
+            self.Cells[5][row].figure.init_state = False
+            rook_cell.figure = None
+            return True
+
+        return False
+
+    def check_pawn_prohod(self, cell_from: Cell, cell_to: Cell):
+        if cell_from.figure.fig != PAWN or cell_to.figure != None:
+            return False
+
+        diff = 1 if self.current_color == WHITE else -1
+
+        if abs(cell_from.col - cell_to.col) != 1 or cell_to.row - cell_from.row != diff:
+            return False
+
+        cell_prohod = self.Cells[cell_to.col][cell_from.row]
+        if cell_prohod.figure == None or cell_prohod.figure.fig != PAWN or cell_prohod != self.last_cell_to:
+            return False
+
+        cell_prohod_prev = self.Cells[cell_to.col][cell_from.row + 2 * diff]
+        if cell_prohod_prev != self.last_cell_from:
+            return False
+
+        old_cell_prohod_figure = cell_prohod.figure
+        old_cell_from_figure = cell_from.figure
+
+        cell_from.figure = None
+        cell_to.figure = old_cell_from_figure
+        cell_prohod.figure = None
+
+        if self.is_check(self.current_color):
+            cell_to.figure = None
+            cell_prohod.figure = old_cell_prohod_figure
+            cell_from.figure = old_cell_from_figure
+            return False
+
+        return True
+
+    def check_pawn_figure(self, cell_from: Cell, cell_to: Cell):
+        if cell_from.figure.fig != PAWN:
+            return False
+
+        if cell_to.figure != None and cell_to.figure.color == cell_from.figure.color:
+            return False
+
+        diff = 1 if self.current_color == WHITE else -1
+
+        if cell_to.row - cell_from.row != diff:
+            return False
+
+        if abs(cell_from.col - cell_to.col) > 1:
+            return False
+
+        if abs(cell_from.col - cell_to.col) == 0 and cell_to.figure != None:
+            return False
+
+        if abs(cell_from.col - cell_to.col) == 1 and cell_to.figure == None:
+            return False
+
+        if cell_to.row != 0 and cell_to.row != 7:
+            return False
+
+        old_cell_to_figure = cell_to.figure
+        old_cell_from_figure = cell_from.figure
+
+        cell_to.figure = old_cell_from_figure
+        cell_from.figure = None
+
+        if self.is_check(self.current_color):
+            cell_from.figure = old_cell_from_figure
+            cell_to.figure = old_cell_to_figure
+            return False
+
+        cell_to.figure = Queen(self.current_color)  # АЗАТ
+        cell_to.figure.init_state = False
+        return True
 
     def move_cells(self, cell_from: Cell, cell_to: Cell) -> bool:
         if cell_from == cell_to:
@@ -182,19 +311,26 @@ class Board:
         if cell_to.figure != None and cell_from.figure.color == cell_to.figure.color:
             return False
 
-        if cell_from.figure.check_move(self, cell_from, cell_to) == False:
-            return False
+        if self.check_castling(cell_from, cell_to):
+            pass
+        elif self.check_pawn_prohod(cell_from, cell_to):
+            pass
+        elif self.check_pawn_figure(cell_from, cell_to):
+            pass
+        else:
+            if cell_from.figure.check_move(self, cell_from, cell_to) == False:
+                return False
 
-        old_cell_from_figure = cell_from.figure
-        old_cell_to_figure = cell_to.figure
+            old_cell_from_figure = cell_from.figure
+            old_cell_to_figure = cell_to.figure
 
-        cell_to.figure = cell_from.figure
-        cell_from.figure = None
+            cell_to.figure = cell_from.figure
+            cell_from.figure = None
 
-        if self.is_check(self.current_color):
-            cell_from.figure = old_cell_from_figure
-            cell_to.figure = old_cell_to_figure
-            return False
+            if self.is_check(self.current_color):
+                cell_from.figure = old_cell_from_figure
+                cell_to.figure = old_cell_to_figure
+                return False
 
         reverse_color = WHITE if self.current_color == BLACK else BLACK
         if self.is_checkmate(reverse_color):
@@ -210,6 +346,8 @@ class Board:
             print("STALEMATE")
             exit(0)
 
+        self.last_cell_from = cell_from
+        self.last_cell_to = cell_to
         cell_to.figure.init_state = False
         self.current_color = reverse_color
         return True
@@ -380,6 +518,7 @@ class Figure:
     init_state = True
     img = 0
 
+
 class Pawn(Figure):
     def __init__(self, color):
         self.fig = PAWN
@@ -404,8 +543,6 @@ class Pawn(Figure):
         if ((cell_to.figure != None) and (abs(cell_from.col - cell_to.col) == 1) and
                 (cell_to.row - cell_from.row == diff)):
             return True
-
-        # Съесть на проход
 
         return False
 
@@ -537,6 +674,7 @@ class King(Figure):
         if self.color != cell_to.figure.color:
             return True
         return False
+
 
 if __name__ == '__main__':
     board = Board()
