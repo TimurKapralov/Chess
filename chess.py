@@ -327,15 +327,19 @@ class Board:
 
     def move_cells(self, cell_from: Cell, cell_to: Cell) -> bool:
         if cell_from == cell_to:
+            print(0)
             return False
 
         if cell_from.figure == None:
+            print(1)
             return False
 
         if cell_from.figure.color != self.current_color:
+            print(2)
             return False
 
         if cell_to.figure != None and cell_from.figure.color == cell_to.figure.color:
+            print(3)
             return False
 
         if self.check_castling(cell_from, cell_to):
@@ -391,6 +395,8 @@ class Board:
 
         cell_from = self.Cells[ord(cells[0][0]) - ord('A')][ord(cells[0][1]) - ord('1')]
         cell_to = self.Cells[ord(cells[1][0]) - ord('A')][ord(cells[1][1]) - ord('1')]
+
+        print(cell_from, cell_to)
 
         return self.move_cells(cell_from, cell_to)
 

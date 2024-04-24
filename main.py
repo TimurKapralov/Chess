@@ -12,6 +12,16 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+translator = {
+    "1": "A",
+    "2": "B",
+    "3": "C",
+    "4": "D",
+    "5": "E",
+    "6": "F",
+    "7": "G",
+    "8": "H"
+}
 
 
 @login_manager.user_loader
@@ -74,7 +84,8 @@ def logout():
     return redirect("/")
 
 
-board = None
+board = Board()
+a = []
 
 
 @app.route('/game')
@@ -88,13 +99,23 @@ def game():
 @app.route('/chess_move', methods=['POST', 'GET'])
 def chess_move():
     global board
+    global a
     # a = request.form['cell_from']
     # b = request.form['cell_to']
-    data1 = request.get_json().get('data')
-    print(data1)
-    # board.move([a, b])
-    # board.get_html()
-    return render_template('chess.html')
+    data = request.get_json().get('data')
+    a.append(data)
+    print(a)
+    if len(a) == 2 and a[0] != a[1]:
+        d1 = translator[a[0][0]] + a[0][1]
+        d2 = translator[a[1][0]] + a[1][1]
+        board.move([d1, d2])
+        board.get_html()
+        a.clear()
+        return render_template('chess.html')
+    elif len(a) == 2:
+        if a[0] == a[1]:
+            del a[1]
+    return "f"
 
 
 # @app.route('/process_data', methods=['POST'])
