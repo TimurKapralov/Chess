@@ -1,1 +1,131 @@
- <!DOCTYPE html>     <html>     <head>         <title></title>         <meta charset="UTF-8">         <style>             .chess-board { border-spacing: 0; border-collapse: collapse; }             .chess-board th { padding: .5em; }             .chess-board th + th { border-bottom: 1px solid black; }             .chess-board th:first-child,             .chess-board td:last-child { border-right: 1px solid black; }             .chess-board tr:last-child td { border-bottom: 1px solid; }             .chess-board th:empty { border: none; }             .chess-board td { width: 1.5em; height: 1.5em; text-align: center; font-size: 32px; line-height: 0;}             .chess-board .light { background: #ECD89B; }             .chess-board .dark { background: #904B0A; }             .chess-board .white { color: white; }             .chess-board .black { color: black; }         </style>     </head>     <body>         <table class="chess-board">             <tbody> <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th></tr><tr><th>8</th><th class = "light black">♜</th><th class = "dark black">♞</th><th class = "light black">♝</th><th class = "dark black">♛</th><th class = "light black">♚</th><th class = "dark black">♝</th><th class = "light black">♞</th><th class = "dark black">♜</th></tr><tr><th>7</th><th class = "dark black">♟</th><th class = "light black">♟</th><th class = "dark black">♟</th><th class = "light black">♟</th><th class = "dark"></th><th class = "light black">♟</th><th class = "dark black">♟</th><th class = "light black">♟</th></tr><tr><th>6</th><th class = "light"></th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th></tr><tr><th>5</th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th><th class = "light"></th><th class = "dark black">♟</th><th class = "light"></th><th class = "dark"></th><th class = "light"></th></tr><tr><th>4</th><th class = "light"></th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th><th class = "light white">♟</th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th></tr><tr><th>3</th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th><th class = "light"></th><th class = "dark"></th><th class = "light"></th></tr><tr><th>2</th><th class = "light white">♟</th><th class = "dark white">♟</th><th class = "light white">♟</th><th class = "dark white">♟</th><th class = "light"></th><th class = "dark white">♟</th><th class = "light white">♟</th><th class = "dark white">♟</th></tr><tr><th>1</th><th class = "dark white">♜</th><th class = "light white">♞</th><th class = "dark white">♝</th><th class = "light white">♛</th><th class = "dark white">♚</th><th class = "light white">♝</th><th class = "dark white">♞</th><th class = "light white">♜</th></tr>             </tbody>         </table>         <form method="POST" action="/chess_move">             <input class="cell" name="cell_from" placeholder="Введите ячейку старта" />             <input class="cell" name="cell_to" placeholder="Введите ячейку финиша" />             <input type="submit" value="Сходить" />         </form>     </body> </html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        #chess-board { border-spacing: 0; border-collapse: collapse; }
+        #chess-board th { padding: .5em; }
+        #chess-board th + th { border-bottom: 1px solid black; }
+        #chess-board th:first-child,
+        #chess-board td:last-child { border-right: 1px solid black; }
+        #chess-board tr:last-child td { border-bottom: 1px solid; }
+        #chess-board th:empty { border: none; }
+        #chess-board td { width: 1.5em; height: 1.5em; text-align: center; font-size: 32px; line-height: 0;}
+        #chess-board .light { background: #ECD89B; }
+        #chess-board .dark { background: #904B0A; }
+        #chess-board .white { color: white; }
+        #chess-board .black { color: black; }
+    </style>
+    <title>Clickable Table</title>
+</head>
+<body>
+    <table id="chess-board">
+        <tr>
+            <th>8</th>
+            <td class="light black" data-value="81">♜</td>
+            <td class="dark  black" data-value="82">♞</td>
+            <td class="light black" data-value="83">♝</td>
+            <td class="dark  black" data-value="84">♛</td>
+            <td class="light black" data-value="85">♚</td>
+            <td class="dark  black" data-value="86">♝</td>
+            <td class="light black" data-value="87">♞</td>
+            <td class="dark  black" data-value="88">♜</td>
+        </tr>
+        <tr>
+            <th>7</th>
+            <td class="dark  black" data-value="71">♟</td>
+            <td class="light black" data-value="72">♟</td>
+            <td class="dark  black" data-value="73">♟</td>
+            <td class="light black" data-value="74">♟</td>
+            <td class="dark  black" data-value="75">♟</td>
+            <td class="light black" data-value="76">♟</td>
+            <td class="dark  black" data-value="77">♟</td>
+            <td class="light black" data-value="78">♟</td>
+        </tr>
+        <tr>
+            <th>6</th>
+            <td class="light" data-value="61"></td>
+            <td class="dark" data-value="62"></td>
+            <td class="light" data-value="63"></td>
+            <td class="dark" data-value="64"></td>
+            <td class="light" data-value="65"></td>
+            <td class="dark" data-value="66"></td>
+            <td class="light" data-value="67"></td>
+            <td class="dark" data-value="68"></td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td class="dark" data-value="51"></td>
+            <td class="light" data-value="52"></td>
+            <td class="dark" data-value="53"></td>
+            <td class="light" data-value="54"></td>
+            <td class="dark" data-value="55"></td>
+            <td class="light" data-value="56"></td>
+            <td class="dark" data-value="57"></td>
+            <td class="light" data-value="58"></td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td class="light" data-value="41"></td>
+            <td class="dark" data-value="42"></td>
+            <td class="light" data-value="43"></td>
+            <td class="dark" data-value="44"></td>
+            <td class="light" data-value="45"></td>
+            <td class="dark" data-value="46"></td>
+            <td class="light" data-value="47"></td>
+            <td class="dark" data-value="48"></td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td class="dark" data-value="31"></td>
+            <td class="light" data-value="32"></td>
+            <td class="dark" data-value="33"></td>
+            <td class="light" data-value="34"></td>
+            <td class="dark" data-value="35"></td>
+            <td class="light" data-value="36"></td>
+            <td class="dark" data-value="37"></td>
+            <td class="light" data-value="38"></td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td class="light white" data-value="21">♟</td>
+            <td class="dark  white" data-value="22">♟</td>
+            <td class="light white" data-value="23">♟</td>
+            <td class="dark  white" data-value="24">♟</td>
+            <td class="light white" data-value="25">♟</td>
+            <td class="dark  white" data-value="26">♟</td>
+            <td class="light white" data-value="27">♟</td>
+            <td class="dark  white" data-value="28">♟</td>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td class="dark  white" data-value="11">♜</td>
+            <td class="light white" data-value="12">♞</td>
+            <td class="dark  white" data-value="13">♝</td>
+            <td class="light white" data-value="14">♛</td>
+            <td class="dark  white" data-value="15">♚</td>
+            <td class="light white" data-value="16">♝</td>
+            <td class="dark  white" data-value="17">♞</td>
+            <td class="light white" data-value="18">♜</td>
+        </tr>
+    </table>
+
+    <script>
+        document.getElementById('chess-board').addEventListener('click', function(e) {
+            if (e.target.tagName === 'TD') {
+                let cellData = e.target.getAttribute('data-value');
+                fetch('/process_data', {
+                    method: 'POST',
+                    body: JSON.stringify({ data: cellData }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    console.log('Data sent successfully');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

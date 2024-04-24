@@ -20,43 +20,70 @@ OFF = 1
 
 IMPOSSIBLE_COUNT = 33
 
-START_HTML_BOARD = '\
+translator = {
+    "1": "A",
+    "2": "B",
+    "3": "C",
+    "4": "D",
+    "5": "E",
+    "6": "F",
+    "7": "G",
+    "8": "H"
+}
+
+START_HTML_BOARD = "\
 <!DOCTYPE html> \n\
-    <html  lang="ru"> \n\
+    <html  lang='ru'> \n\
     <head> \n\
         <title></title> \n\
-        <meta charset="UTF-8"> \n\
+        <meta charset='UTF-8'> \n\
         <style> \n\
-            .chess-board { border-spacing: 0; border-collapse: collapse; } \n\
-            .chess-board th { padding: .5em; } \n\
-            .chess-board th + th { border-bottom: 1px solid black; } \n\
-            .chess-board th:first-child, \n\
-            .chess-board td:last-child { border-right: 1px solid black; } \n\
-            .chess-board tr:last-child td { border-bottom: 1px solid; } \n\
-            .chess-board th:empty { border: none; } \n\
-            .chess-board td { width: 1.5em; height: 1.5em; text-align: center; font-size: 32px; line-height: 0;} \n\
-            .chess-board .light { background: #ECD89B; } \n\
-            .chess-board .dark { background: #904B0A; } \n\
-            .chess-board .white { color: white; } \n\
-            .chess-board .black { color: black; } \n\
+            #chess-board { border-spacing: 0; border-collapse: collapse; } \n\
+            #chess-board th { padding: .5em; } \n\
+            #chess-board th + th { border-bottom: 1px solid black; } \n\
+            #chess-board th:first-child, \n\
+            #chess-board td:last-child { border-right: 1px solid black; } \n\
+            #chess-board tr:last-child td { border-bottom: 1px solid; } \n\
+            #chess-board th:empty { border: none; } \n\
+            #chess-board td { width: 1.5em; height: 1.5em; text-align: center; font-size: 32px; line-height: 0;} \n\
+            #chess-board .light { background: #ECD89B; } \n\
+            #chess-board .dark { background: #904B0A; } \n\
+            #chess-board .white { color: white; } \n\
+            #chess-board .black { color: black; } \n\
         </style> \n\
     </head> \n\
     <body> \n\
-        <table class="chess-board"> \n\
+        <table id='chess-board'> \n\
             <tbody> \n\
-'
+"
 
-END_HTML_BOARD = '\
+END_HTML_BOARD = "\
             </tbody> \n\
         </table> \n\
-        <form method="POST" action="/chess_move"> \n\
-            <input class="cell" name="cell_from" placeholder="Введите ячейку старта" /> \n\
-            <input class="cell" name="cell_to" placeholder="Введите ячейку финиша" /> \n\
-            <input type="submit" value="Сходить" /> \n\
+        <script> \n\
+            document.getElementById('chess-board').addEventListener('click', function(e) { \n\
+                if (e.target.tagName === 'TD') { \n\
+                    let cellData = e.target.getAttribute('data-value'); \n\
+                    fetch('/chess_move', { \n\
+                        method: 'POST', \n\
+                        body: JSON.stringify({ data: cellData }), \n\
+                        headers: { \n\
+                            'Content-Type': 'application/json' \n\
+                        } \n\
+                    }).then(response => { \n\
+                        console.log('Data'); \n\
+                    }); \n\
+                } \n\
+            }); \n\
+        </script> \n\
+        <form method=\"POST\" action=\"/chess_move\"> \n\
+            <input class=\"cell\" name=\"cell_from\" placeholder=\"Введите ячейку старта\" /> \n\
+            <input class=\"cell\" name=\"cell_to\" placeholder=\"Введите ячейку финиша\" /> \n\
+            <input type=\"submit\" value=\"Сходить\" /> \n\
         </form> \n\
     </body> \n\
 </html> \n\
-'
+"
 
 
 class Cell:
@@ -66,7 +93,7 @@ class Cell:
         self.figure = None
 
     def print(self):
-        if self.figure == None:
+        if self.figure is None:
             return "  "
 
         str = ""
@@ -154,16 +181,16 @@ class Board:
             a += f"<th>{row + 1}</th>\n"
             for col in range(self.width):
                 v = 'light' if (row + col) % 2 == 1 else 'dark'
-                if self.Cells[col][row].figure == None:
-                    a += f"<td class = \"{v}\"></td>\n"
+                if self.Cells[col][row].figure is None:
+                    a += f"<td class = \"{v}\" data-value = \"{str(row) + str(col)}\"></td>\n"
                     continue
 
                 color = 'white' if self.Cells[col][row].figure.color == WHITE else 'black'
                 img = self.Cells[col][row].figure.img
-                a += f"<td class = \"{v} {color}\">{img}</td>\n"
+                a += f"<td class = \"{v} {color}\" data-value = \"{str(row) + str(col)}\">{img}</td>\n"
             a += "</tr>\n"
         a += END_HTML_BOARD
-        print(a)
+        # print(a) 🥰🥰🥰🥰🥰🥰
         d = open("templates/chess.html", "w", encoding="utf-8")
         d.write(a)
         d.close()

@@ -88,11 +88,22 @@ def game():
 @app.route('/chess_move', methods=['POST', 'GET'])
 def chess_move():
     global board
-    a = request.form['cell_from']
-    b = request.form['cell_to']
-    board.move([a, b])
-    board.get_html()
+    # a = request.form['cell_from']
+    # b = request.form['cell_to']
+    data1 = request.get_json().get('data')
+    print(data1)
+    # board.move([a, b])
+    # board.get_html()
     return render_template('chess.html')
+
+
+# @app.route('/process_data', methods=['POST'])
+# def process_data():
+#     data = request.get_json().get('data')
+#     cell_data = data.get('data')
+#     print(cell_data)
+#
+#     return f"I return your {cell_data}"
 
 
 if __name__ == '__main__':
