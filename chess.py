@@ -20,23 +20,16 @@ OFF = 1
 
 IMPOSSIBLE_COUNT = 33
 
-translator = {
-    "1": "A",
-    "2": "B",
-    "3": "C",
-    "4": "D",
-    "5": "E",
-    "6": "F",
-    "7": "G",
-    "8": "H"
-}
-
 START_HTML_BOARD = "\
 <!DOCTYPE html> \n\
-    <html  lang='ru'> \n\
+    <html lang='ru'> \n\
     <head> \n\
         <title></title> \n\
         <meta charset='UTF-8'> \n\
+        <link rel='stylesheet' \n\
+        href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css'> \n\
+        integrity='sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1' \n\
+        crossorigin='anonymous' \n\
         <style> \n\
             #chess-board { border-spacing: 0; border-collapse: collapse; float: right; } \n\
             #chess-board th { padding: .5em; } \n\
@@ -77,13 +70,9 @@ END_HTML_BOARD = "\
             }); \n\
         </script> \n\
         <button type='button' onClick='window.location.reload()'> \n\
-           Reload Page \n\
+           Обновить доску \n\
         </button> \n\
-        <form method=\"POST\" action=\"/chess_move\"> \n\
-            <input class=\"cell\" name=\"cell_from\" placeholder=\"Введите ячейку старта\" /> \n\
-            <input class=\"cell\" name=\"cell_to\" placeholder=\"Введите ячейку финиша\" /> \n\
-            <input type=\"submit\" value=\"Сходить\" /> \n\
-        </form> \n\
+        <h1 id='status'>{{ status }}</h1> \n\
     </body> \n\
 </html> \n\
 "
@@ -193,7 +182,6 @@ class Board:
                 a += f"<td class = \"{v} {color}\" data-value = \"{str(row) + str(col)}\">{img}</td>\n"
             a += "</tr>\n"
         a += END_HTML_BOARD
-        # print(a) 🥰🥰🥰🥰🥰🥰
         d = open("templates/chess.html", "w", encoding="utf-8")
         d.write(a)
         d.close()
@@ -209,7 +197,7 @@ class Board:
         row = cell_from.row
 
         rook_cell = self.Cells[rook_col][row]
-        if rook_cell.figure == None or rook_cell.figure.fig != ROOK or rook_cell.figure.init_state != True:
+        if rook_cell.figure is None or rook_cell.figure.fig != ROOK or rook_cell.figure.init_state is not True:
             return False
 
         if self.count_figures_between_cells(cell_from, rook_cell) != 2:
@@ -370,14 +358,14 @@ class Board:
         if self.is_checkmate(reverse_color):
             self.print()
             if self.current_color == WHITE:
-                print("WHITE WIN")
+                print("\n\n\n\n\nБЕЛЫЙ ПОБЕДА\n\n\n\n\n")
             else:
-                print("BLACK WIN")
+                print("\n\n\n\n\nБЕЛЫЙ ПОБЕДА\n\n\n\n\n")
             exit(0)
 
         if self.is_stalemate(reverse_color):
             self.print()
-            print("STALEMATE")
+            print("\n\n\n\n\nПАТ\n\n\n\n\n")
             exit(0)
 
         self.last_cell_from = cell_from
@@ -524,14 +512,14 @@ class Board:
 
     def is_check(self, color):
         king = self.get_king(color)
-
         for i in range(self.width):
             for j in range(self.height):
                 cell = self.Cells[i][j]
-                if cell.figure == None or cell.figure.color == color:
+                if cell.figure is None or cell.figure.color == color:
                     continue
 
                 if cell.figure.check_move(self, cell, king):
+                    print("\n\n\n\n\nШАХ\n\n\n\n\n")
                     return True
         return False
 
@@ -717,8 +705,7 @@ if __name__ == '__main__':
     board.print()
     while board.state == ON:
         cells = input().split()
-        if board.move(cells) == False:
-            print("Incorrect move")
+        if board.move(cells) is False:
+            print("\n\n\n\n\nНЕПРАВИЛЬНЫЙ ХОД\n\n\n\n\n")
             continue
-
         board.print()
