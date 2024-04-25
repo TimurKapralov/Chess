@@ -112,6 +112,7 @@ def chess_move():
         print(d1, d2)
         board.move([d1, d2])
         board.get_html()
+        board.print()
         a.clear()
         return render_template('chess.html')
     elif len(a) == 2:
