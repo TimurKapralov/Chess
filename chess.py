@@ -38,99 +38,99 @@ START_HTML_BOARD = ("\
         <title></title> \n\
         <meta charset='UTF-8'> \n\
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css' "
-                          "integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' "
-                          "crossorigin='anonymous'> \n\
-        <style> \n\
-                body { \n\
-            font-family: Arial, sans-serif; \n\
-            background-color: #f1f1f1; \n\
-            margin: 0; \n\
-            padding: 0; \n\
-            } \n\
-            .container { \n\
-                max-width: 800px; \n\
-                margin: 50px auto; \n\
-            } \n\
-            #chess-board { \n\
-                border-spacing: 0; \n\
-                border-collapse: collapse; \n\
-                margin: 0 auto; \n\
-            } \n\
-            #chess-board th, #chess-board td { \n\
-                width: 50px; \n\
-                height: 50px; \n\
-                text-align: center; \n\
-            } \n\
-            #chess-board th:empty, #chess-board td:empty { \n\
-                border: none; \n\
-            } \n\
-            #chess-board .light { \n\
-                background: #f0d9b5; \n\
-                color: #774e28; \n\
-            } \n\
-            #chess-board .dark { \n\
-                background: #b58863; \n\
-                color: #ffffff; \n\
-            } \n\
-            #chess-board th:first-child, \n\
-            #chess-board td:last-child { \n\
-                border-right: 2px solid #774e28; \n\
-            } \n\
-            #chess-board tr:last-child td { \n\
-                border-bottom: 2px solid #774e28; \n\
-            } \n\
-            #chess-board th + th { \n\
-                border-bottom: 2px solid #774e28; \n\
-            } \n\
-            #chess-board th, #chess-board td { \n\
-                width: 100px; \n\
-                text-align: center; \n\
-            } \n\
-            #chess-board th, #chess-board td { \n\
-                font-size: 2em; \n\
-            } \n\
-            #chess-board th.light, #chess-board td.light { \n\
-                background: #f0d9b5; \n\
-                color: #774e28; \n\
-            } \n\
-            #chess-board th.dark, #chess-board td.dark { \n\
-                background: #b58863; \n\
-                color: #ffffff; \n\
-            } \n\
-            #chess-board th.white, #chess-board td.white { \n\
-                color: #ffffff; \n\
-            } \n\
-            #chess-board th.black, #chess-board td.black { \n\
-                color: #000000; \n\
-            } \n\
-            #chess-board a { \n\
-                display: block; \n\
-                width: 100%; \n\
-                height: 100%; \n\
-                text-decoration: none; \n\
-                color: inherit; \n\
-            } \n\
-            .reload-btn { \n\
-                display: block; \n\
-                margin: 300px 300px; \n\
-                padding: 200px; \n\
-                background-color: #774e28; \n\
-                color: #ffffff; \n\
-                text-align: center; \n\
-                text-transform: uppercase; \n\
-                border-radius: 5px; \n\
-                cursor: pointer; \n\
-                float: left; \n\
-            } \n\
-            .reload-btn:hover { \n\
-                background-color: #b58863; \n\
-            } \n\
-        </style> \n\
-        <meta http-equiv='refresh' content='30'> \n\
-    </head> \n\
-    <body> \n\
-        <table id='chess-board'> \n\
-            <tbody> \n\
+                    "integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' "
+                    "crossorigin='anonymous'> \n\
+  <style> \n\
+          body { \n\
+      font-family: Arial, sans-serif; \n\
+      background-color: #f1f1f1; \n\
+      margin: 0; \n\
+      padding: 0; \n\
+      } \n\
+      .container { \n\
+          max-width: 800px; \n\
+          margin: 50px auto; \n\
+      } \n\
+      #chess-board { \n\
+          border-spacing: 0; \n\
+          border-collapse: collapse; \n\
+          margin: 0 auto; \n\
+      } \n\
+      #chess-board th, #chess-board td { \n\
+          width: 50px; \n\
+          height: 50px; \n\
+          text-align: center; \n\
+      } \n\
+      #chess-board th:empty, #chess-board td:empty { \n\
+          border: none; \n\
+      } \n\
+      #chess-board .light { \n\
+          background: #f0d9b5; \n\
+          color: #774e28; \n\
+      } \n\
+      #chess-board .dark { \n\
+          background: #b58863; \n\
+          color: #ffffff; \n\
+      } \n\
+      #chess-board th:first-child, \n\
+      #chess-board td:last-child { \n\
+          border-right: 2px solid #774e28; \n\
+      } \n\
+      #chess-board tr:last-child td { \n\
+          border-bottom: 2px solid #774e28; \n\
+      } \n\
+      #chess-board th + th { \n\
+          border-bottom: 2px solid #774e28; \n\
+      } \n\
+      #chess-board th, #chess-board td { \n\
+          width: 100px; \n\
+          text-align: center; \n\
+      } \n\
+      #chess-board th, #chess-board td { \n\
+          font-size: 2em; \n\
+      } \n\
+      #chess-board th.light, #chess-board td.light { \n\
+          background: #f0d9b5; \n\
+          color: #774e28; \n\
+      } \n\
+      #chess-board th.dark, #chess-board td.dark { \n\
+          background: #b58863; \n\
+          color: #ffffff; \n\
+      } \n\
+      #chess-board th.white, #chess-board td.white { \n\
+          color: #ffffff; \n\
+      } \n\
+      #chess-board th.black, #chess-board td.black { \n\
+          color: #000000; \n\
+      } \n\
+      #chess-board a { \n\
+          display: block; \n\
+          width: 100%; \n\
+          height: 100%; \n\
+          text-decoration: none; \n\
+          color: inherit; \n\
+      } \n\
+      .reload-btn { \n\
+          display: block; \n\
+          margin: 300px 300px; \n\
+          padding: 200px; \n\
+          background-color: #774e28; \n\
+          color: #ffffff; \n\
+          text-align: center; \n\
+          text-transform: uppercase; \n\
+          border-radius: 5px; \n\
+          cursor: pointer; \n\
+          float: left; \n\
+      } \n\
+      .reload-btn:hover { \n\
+          background-color: #b58863; \n\
+      } \n\
+  </style> \n\
+  <meta http-equiv='refresh' content='30'> \n\
+</head> \n\
+<body> \n\
+  <table id='chess-board'> \n\
+      <tbody> \n\
 ")
 
 END_HTML_BOARD = "\
@@ -152,8 +152,6 @@ END_HTML_BOARD = "\
             }); \n\
         </script> \n\
         <button type='button' class='btn btn-primary btn-lg' onClick='window.location.reload()'>RELOAD</button> \n\
-    </body> \n\
-</html> \n\
 "
 
 
@@ -191,6 +189,7 @@ class Cell:
 
 class Board:
     def __init__(self):
+        self.last_status = 0
         self.current_color = WHITE
         self.state = ON
         self.width = 8
@@ -241,6 +240,23 @@ class Board:
         print()
 
     def get_html(self):
+        STR = ""
+        cur = "БЕЛЫЕ" if self.current_color == WHITE else "ЧЕРНЫЕ"
+        if self.last_status == 1:
+            STR = "НЕВЕРНЫЙ ХОД, ХОДЯТ " + cur
+        elif self.last_status == 2:
+            STR = cur + " ВЫИГРАЛИ"
+        elif self.last_status == 3:
+            STR = "НИЧЬЯ"
+        elif self.last_status == 0:
+            STR = "ХОДЯТ " + cur
+
+        END_WITH_TEXT = f"\
+                <label>{STR}</label>\n\
+            </body> \n\
+        </html> \n\
+        "
+
         a = START_HTML_BOARD
         a += "<tr>\n"
         a += "<th></th>\n"
@@ -261,7 +277,7 @@ class Board:
                 a += f"<td class = \"{v} {color}\" data-value = \"{str(row) + str(col)}\">{img}</td>\n"
             a += "</tr>\n"
         a += END_HTML_BOARD
-        # print(a) 🥰🥰🥰🥰🥰🥰
+        a += END_WITH_TEXT
         d = open("templates/chess.html", "w", encoding="utf-8")
         d.write(a)
         d.close()
@@ -441,13 +457,16 @@ class Board:
                 print("WHITE WIN")
             else:
                 print("BLACK WIN")
-            exit(0)
+            self.last_status = 2
+            return True
 
         if self.is_stalemate(reverse_color):
             self.print()
             print("STALEMATE")
-            exit(0)
+            self.last_status = 3
+            return True
 
+        self.last_status = 0
         self.last_cell_from = cell_from
         self.last_cell_to = cell_to
         cell_to.figure.init_state = False
@@ -455,6 +474,11 @@ class Board:
         return True
 
     def move(self, cells):
+        if self.last_status == 2 or self.last_status == 3:
+            return False
+
+        self.last_status = 1
+
         if len(cells) != 2 or len(cells[0]) != 2 or len(cells[1]) != 2:
             return False
 
