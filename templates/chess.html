@@ -19,7 +19,7 @@
         </style> 
     </head> 
     <body> 
-        <table id='chess-board'> 
+        <table id="chess-board"> 
             <tbody> 
 <tr>
 <th></th>
@@ -123,21 +123,21 @@
             </tbody> 
         </table> 
         <script> 
-            document.getElementById('chess-board').addEventListener('click', function(e) { 
+            document.getElementById('data-table').addEventListener('click', function(e) { 
                 if (e.target.tagName === 'TD') { 
                     let cellData = e.target.getAttribute('data-value'); 
-                    fetch('/chess_move', { 
+                    fetch('/process_data', { 
                         method: 'POST', 
                         body: JSON.stringify({ data: cellData }), 
                         headers: { 
                             'Content-Type': 'application/json' 
                         } 
                     }).then(response => { 
-                        console.log('Data'); 
+                        console.log('Data sent successfully'); 
                     }); 
                 } 
             }); 
-        </script> 
+    </script> 
         <form method="POST" action="/chess_move"> 
             <input class="cell" name="cell_from" placeholder="Введите ячейку старта" /> 
             <input class="cell" name="cell_to" placeholder="Введите ячейку финиша" /> 

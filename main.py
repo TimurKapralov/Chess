@@ -84,7 +84,7 @@ def logout():
     return redirect("/")
 
 
-board = Board()
+board = None
 a = []
 
 
@@ -100,22 +100,30 @@ def game():
 def chess_move():
     global board
     global a
+
     # a = request.form['cell_from']
     # b = request.form['cell_to']
+
     data = request.get_json().get('data')
     a.append(data)
-    print(a)
+    # print(data)
     if len(a) == 2 and a[0] != a[1]:
-        d1 = translator[a[0][0]] + a[0][1]
-        d2 = translator[a[1][0]] + a[1][1]
+        d1 = translator[str(int(a[0][1]) + 1)] + str(int(a[0][0]) + 1)
+        d2 = translator[str(int(a[1][1]) + 1)] + str(int(a[1][0])+ 1)
+        # print(d1, d2)
         board.move([d1, d2])
         board.get_html()
         a.clear()
-        return render_template('chess.html')
     elif len(a) == 2:
         if a[0] == a[1]:
             del a[1]
-    return "f"
+    return render_template('chess.html')
+
+    # board.move([a, b])
+    # board.get_html()
+    # return render_template('chess.html')
+
+    # return "1"
 
 
 # @app.route('/process_data', methods=['POST'])

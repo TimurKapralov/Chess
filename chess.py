@@ -53,7 +53,7 @@ START_HTML_BOARD = "\
         </style> \n\
     </head> \n\
     <body> \n\
-        <table id='chess-board'> \n\
+        <table id=\"chess-board\"> \n\
             <tbody> \n\
 "
 
@@ -61,21 +61,21 @@ END_HTML_BOARD = "\
             </tbody> \n\
         </table> \n\
         <script> \n\
-            document.getElementById('chess-board').addEventListener('click', function(e) { \n\
+            document.getElementById('data-table').addEventListener('click', function(e) { \n\
                 if (e.target.tagName === 'TD') { \n\
                     let cellData = e.target.getAttribute('data-value'); \n\
-                    fetch('/chess_move', { \n\
+                    fetch('/process_data', { \n\
                         method: 'POST', \n\
                         body: JSON.stringify({ data: cellData }), \n\
                         headers: { \n\
                             'Content-Type': 'application/json' \n\
                         } \n\
                     }).then(response => { \n\
-                        console.log('Data'); \n\
+                        console.log('Data sent successfully'); \n\
                     }); \n\
                 } \n\
             }); \n\
-        </script> \n\
+    </script> \n\
         <form method=\"POST\" action=\"/chess_move\"> \n\
             <input class=\"cell\" name=\"cell_from\" placeholder=\"Введите ячейку старта\" /> \n\
             <input class=\"cell\" name=\"cell_to\" placeholder=\"Введите ячейку финиша\" /> \n\
@@ -327,19 +327,15 @@ class Board:
 
     def move_cells(self, cell_from: Cell, cell_to: Cell) -> bool:
         if cell_from == cell_to:
-            print(0)
             return False
 
         if cell_from.figure == None:
-            print(1)
             return False
 
         if cell_from.figure.color != self.current_color:
-            print(2)
             return False
 
         if cell_to.figure != None and cell_from.figure.color == cell_to.figure.color:
-            print(3)
             return False
 
         if self.check_castling(cell_from, cell_to):
@@ -350,8 +346,9 @@ class Board:
             pass
         else:
             if cell_from.figure.check_move(self, cell_from, cell_to) == False:
+                print(0)
                 return False
-
+            print(1)
             old_cell_from_figure = cell_from.figure
             old_cell_to_figure = cell_to.figure
 
@@ -359,6 +356,7 @@ class Board:
             cell_from.figure = None
 
             if self.is_check(self.current_color):
+                print(2)
                 cell_from.figure = old_cell_from_figure
                 cell_to.figure = old_cell_to_figure
                 return False
@@ -381,6 +379,7 @@ class Board:
         self.last_cell_to = cell_to
         cell_to.figure.init_state = False
         self.current_color = reverse_color
+        print(3)
         return True
 
     def move(self, cells):
