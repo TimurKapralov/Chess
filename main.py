@@ -22,6 +22,7 @@ translator = {
     "7": "G",
     "8": "H"
 }
+flag = False
 
 
 @login_manager.user_loader
@@ -88,7 +89,7 @@ board = None
 a = []
 
 
-@app.route('/game')
+@app.route('/game', methods=['POST', 'GET'])
 def game():
     global board
     board = Board()
@@ -100,30 +101,23 @@ def game():
 def chess_move():
     global board
     global a
-
     # a = request.form['cell_from']
     # b = request.form['cell_to']
-
     data = request.get_json().get('data')
     a.append(data)
-    # print(data)
+    # print(a)
     if len(a) == 2 and a[0] != a[1]:
         d1 = translator[str(int(a[0][1]) + 1)] + str(int(a[0][0]) + 1)
-        d2 = translator[str(int(a[1][1]) + 1)] + str(int(a[1][0])+ 1)
-        # print(d1, d2)
+        d2 = translator[str(int(a[1][1]) + 1)] + str(int(a[1][0]) + 1)
+        print(d1, d2)
         board.move([d1, d2])
         board.get_html()
         a.clear()
+        return render_template('chess.html')
     elif len(a) == 2:
         if a[0] == a[1]:
             del a[1]
-    return render_template('chess.html')
-
-    # board.move([a, b])
-    # board.get_html()
-    # return render_template('chess.html')
-
-    # return "1"
+    return "press F to this code"
 
 
 # @app.route('/process_data', methods=['POST'])

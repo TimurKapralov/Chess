@@ -19,7 +19,7 @@
         </style> 
     </head> 
     <body> 
-        <table id="chess-board"> 
+        <table id='chess-board'> 
             <tbody> 
 <tr>
 <th></th>
@@ -92,7 +92,7 @@
 <td class = "dark" data-value = "20"></td>
 <td class = "light" data-value = "21"></td>
 <td class = "dark" data-value = "22"></td>
-<td class = "light" data-value = "23"></td>
+<td class = "light white" data-value = "23">♟</td>
 <td class = "dark" data-value = "24"></td>
 <td class = "light" data-value = "25"></td>
 <td class = "dark" data-value = "26"></td>
@@ -103,7 +103,7 @@
 <td class = "light white" data-value = "10">♟</td>
 <td class = "dark white" data-value = "11">♟</td>
 <td class = "light white" data-value = "12">♟</td>
-<td class = "dark white" data-value = "13">♟</td>
+<td class = "dark" data-value = "13"></td>
 <td class = "light white" data-value = "14">♟</td>
 <td class = "dark white" data-value = "15">♟</td>
 <td class = "light white" data-value = "16">♟</td>
@@ -123,21 +123,20 @@
             </tbody> 
         </table> 
         <script> 
-            document.getElementById('data-table').addEventListener('click', function(e) { 
+            document.getElementById('chess-board').addEventListener('click', function(e) { 
                 if (e.target.tagName === 'TD') { 
                     let cellData = e.target.getAttribute('data-value'); 
-                    fetch('/process_data', { 
+                    fetch('/chess_move', { 
                         method: 'POST', 
                         body: JSON.stringify({ data: cellData }), 
                         headers: { 
                             'Content-Type': 'application/json' 
                         } 
                     }).then(response => { 
-                        console.log('Data sent successfully'); 
                     }); 
                 } 
             }); 
-    </script> 
+        </script> 
         <form method="POST" action="/chess_move"> 
             <input class="cell" name="cell_from" placeholder="Введите ячейку старта" /> 
             <input class="cell" name="cell_to" placeholder="Введите ячейку финиша" /> 
