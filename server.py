@@ -122,7 +122,6 @@ def chess_move():
         board.get_html()
         board.print()
         a.clear()
-        # print(get_status)
     return render_template('chess.html')
 
 
