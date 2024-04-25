@@ -38,7 +38,7 @@ START_HTML_BOARD = "\
         <title></title> \n\
         <meta charset='UTF-8'> \n\
         <style> \n\
-            #chess-board { border-spacing: 0; border-collapse: collapse; } \n\
+            #chess-board { border-spacing: 0; border-collapse: collapse; float: right; } \n\
             #chess-board th { padding: .5em; } \n\
             #chess-board th + th { border-bottom: 1px solid black; } \n\
             #chess-board th:first-child, \n\
@@ -51,6 +51,7 @@ START_HTML_BOARD = "\
             #chess-board .white { color: white; } \n\
             #chess-board .black { color: black; } \n\
         </style> \n\
+        <meta http-equiv='refresh' content='30'> \n\
     </head> \n\
     <body> \n\
         <table id='chess-board'> \n\
@@ -75,6 +76,9 @@ END_HTML_BOARD = "\
                 } \n\
             }); \n\
         </script> \n\
+        <button type='button' onClick='window.location.reload()'> \n\
+           Reload Page \n\
+        </button> \n\
         <form method=\"POST\" action=\"/chess_move\"> \n\
             <input class=\"cell\" name=\"cell_from\" placeholder=\"Введите ячейку старта\" /> \n\
             <input class=\"cell\" name=\"cell_to\" placeholder=\"Введите ячейку финиша\" /> \n\

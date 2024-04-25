@@ -22,7 +22,7 @@ translator = {
     "7": "G",
     "8": "H"
 }
-flag = False
+flag = 0
 
 
 @login_manager.user_loader
@@ -91,20 +91,28 @@ a = []
 
 @app.route('/game', methods=['POST', 'GET'])
 def game():
-    global board
+    global board, a, data
     board = Board()
     board.get_html()
-    return render_template('chess.html')
+
+    data = ["A1", "A2"]
+    # redirect('/chess_move')
+
+    return redirect('/chess_move')
 
 
 @app.route('/chess_move', methods=['POST', 'GET'])
 def chess_move():
     global board
     global a
+    global data
     # a = request.form['cell_from']
     # b = request.form['cell_to']
-    data = request.get_json().get('data')
-    a.append(data)
+    try:
+        data = request.get_json().get('data')
+        a.append(data)
+    except Exception:
+        pass
     # print(a)
     if len(a) == 2 and a[0] != a[1]:
         d1 = translator[str(int(a[0][1]) + 1)] + str(int(a[0][0]) + 1)
@@ -114,11 +122,7 @@ def chess_move():
         board.get_html()
         board.print()
         a.clear()
-        return render_template('chess.html')
-    elif len(a) == 2:
-        if a[0] == a[1]:
-            del a[1]
-    return "press F to this code"
+    return render_template('chess.html')
 
 
 # @app.route('/process_data', methods=['POST'])
